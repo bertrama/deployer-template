@@ -1,3 +1,19 @@
+## Curation Concerns Based Application Deployment Project.
+A project "myapp" is hosted publicly.  The deployment and sensitive configs are hosted on a private owned server in a corresponding project "myapp-deployer".
+The intended use of this is to serve as a template for the deployer projects.
+
+### Use and Deviations from Capistrano Standard Practices
+Sometimes there are mutliple "production" deployment targets with different configs. For instance, the EZID configuation for the staging target uses the testing credentials
+for minting DOIs.  In this way, the staging deployment interacts with the external EZID service, but the minted DOIs are only around for two weeks.
+This also means that the actual production deployment configs aren't getting put on the staging, testing, or other tagets which may have different security levels.
+
+The `upload` directory contains all the files that should eventually end up on a target machine instead of those directories being at the base level of the project. 
+
+* `upload/etc/systemd/system ` contains the systemd service templates and drop in configs.
+* The `<target>-config/` directories under `upload/` are the config directories for the respective deployment target.
+  * `upload/staging-config/` maps to shared/config on the staging target.
+  * `upload/production-config/` maps to shared/config on the production target.
+
 ## One time setup for server
 * set up ssh keys for deploying users.
 * create logging directory for apache logs e.g. `/var/log/apache2/myapp-staging/`
@@ -19,7 +35,6 @@
 * add deploying user to sudoers
   * e.g. `%dlps  ALL=(root) NOPASSWD: /bin/systemctl restart app-cc-puma@myapp-staging.service`
 
-
 ## One time pre-capistrano setup.
 in app/shared/ directory:
 * create bundle/
@@ -34,14 +49,10 @@ in app/shared/ directory:
 
 ## Gotchas
 * pidfile config in `puma.rb` must match systemd `app-<myapp_target>.service` pidfile.
-* myapp user needs to have fits.sh in PATH for non-login sessions. This was done by adding a .bashrc to the HOME dir for the user.
+* myapp user needs to have fits.sh in PATH for non-login sessions. This was done by adding a .bashrc to the HOME dir for the user. (Alternatively, can hardcode path to fits in application)
 * For loading datasets from the command line, the user running populate rake task will need write access to the minter-statefile.
 
 ## Systemd Services
 * Using systemd service templates. The supplied instance corresponds to the app and target. e.g. `myapp-production` or `myapp-staging`
-* Startup should be of the form `systemctl app-cc-puma@myapp-production.service` which should start the corresponding rescue pool.
+* Startup should be of the form `systemctl app-cc-puma@myapp-production.service` which will start the corresponding rescue pool.
 * *Need to configure the service and other environment vars using a drop-in conf file.*
-
-### Odds and Ends
-* Solr cores are: philly, ra, grian (production, training, staging)
-

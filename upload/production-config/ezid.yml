@@ -1,0 +1,22 @@
+development:
+  host: 'ezid.lib.purdue.edu'
+  port: 443
+  shoulder: 'doi:10.5072/FK2'
+  use_ssl: true
+  user: "ezidtestuser"
+  password: "ezidtestpass"
+development:
+  host: 'ezid.lib.purdue.edu'
+  port: 443
+  shoulder: 'doi:10.5072/FK2'
+  use_ssl: true
+  user: "ezidtestuser"
+  password: "ezidtestpass"
+production:
+  host: 'ezid.lib.purdue.edu'
+  port: 443
+  shoulder: 'doi:99.999/Z2'
+  use_ssl: true
+  user: "production_ezid_user"
+  password: "production_ezid_sekret"
+

@@ -1,0 +1,22 @@
+#
+# To make browse-everything aware of a provider, uncomment the info for that provider and add your API key information.
+# The file_system provider can be a path to any directory on the server where your application is running.
+#
+# Make Sure that the callback includes the relative root of the application, if you're doing that sort of thing.
+---
+# file_system:
+#   :home: "/use/at/your/own/risk"
+box:
+  :client_id: YourClientIDForYourBoxApp1234h0t
+  :client_secret: YourTpSekretClientKeyForUrBoxApp
+  :callback: http://localhost:3000/browse/connect
+google_drive:
+  :client_id: 888888888888-9abc9abcd9abcdef9abc9abcd9abcdef.apps.googleusercontent.com
+  :client_secret: theDeade5t0fBeef
+  :callback: http://localhost:3000/browse/connect
+# dropbox:
+#   :app_key: YOUR_DROPBOX_APP_KEY
+#   :app_secret: YOUR_DROPBOX_APP_SECRET
+# sky_drive:
+#   :client_id: YOUR_MS_LIVE_CONNECT_CLIENT_ID
+#   :client_secret: YOUR_MS_LIVE_CONNECT_CLIENT_SECRET

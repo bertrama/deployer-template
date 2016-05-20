@@ -32,6 +32,7 @@ The `upload` directory contains all the files that should eventually end up on a
   * Enable the target services (so they come up after restart)
     * e.g. `systemctl enable resque-pool@myapp-staging.service`
 * add deploying user and running user to common group.  i.e. the group of the running user.
+  * `usermod -a -G groupname username`
 * add deploying user to sudoers
   * e.g. `%dlps  ALL=(root) NOPASSWD: /bin/systemctl restart app-cc-puma@myapp-staging.service`
 

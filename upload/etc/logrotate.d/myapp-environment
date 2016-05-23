@@ -1,0 +1,11 @@
+/hydra-dev/myapp-target/app/shared/log/*.log {
+  su myapp myapp
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+  copytruncate
+}
+

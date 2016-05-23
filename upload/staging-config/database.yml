@@ -26,5 +26,5 @@ production:
   database: myapp
   username: myapp
   password: sekret
-  host: mysql-myapp
+  host: localhost
   port: 3306

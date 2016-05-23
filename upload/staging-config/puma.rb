@@ -2,11 +2,11 @@ environment 'production'
 threads 1, 4
 # Bind to the private network address
 # Use unix sockets if the http server is on the same host.
-# bind "unix:///tmp/umrdr-staging.socket"
+bind "unix:///tmp/umrdr-staging.socket"
 # Use tcp as the http server (apache) is on a different host.
-bind 'tcp://10.255.255.255:30060'
+# bind 'tcp://10.255.255.255:30060'
 
-pidfile '/hydra/myapp/app/shared/log/myapp-puma.pid'
+pidfile '/hydra-dev/myapp/app/shared/log/myapp-puma.pid'
 
 on_restart do
 # Code to run before doing a restart. This code should

@@ -5,6 +5,9 @@
 
 lock '~> 3.4'
 
+# Set umask so files are group writeable.
+SSHKit.config.umask = '0002'
+
 set :application, 'myapp'
 set :repo_url, 'https://github.com/myorganization/myapp.git'
 set :scm, :git

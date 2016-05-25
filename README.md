@@ -2,6 +2,14 @@
 A project "myapp" is hosted publicly.  The deployment and sensitive configs are hosted on a private owned server in a corresponding project "myapp-deployer".
 The intended use of this is to serve as a template for the deployer projects.
 
+1. Clone this project into a directory for your application using template instead of origin as the remote name.
+`git clone -o template https://github.com/mlibrary/deployer-template.git myproject-deploy`
+2. Break pushes to deployer-template (but keep the remote around just in case).
+`git config remote.origin.pushurl "Pushes to template source disabled."` 
+3. Make required changes in capistrano deployment files and systemd drop in configs.
+TODO: list required changes, myapp -> project name, etc.
+
+
 ### Use and Deviations from Capistrano Standard Practices
 Sometimes there are mutliple "production" deployment targets with different configs. For instance, the EZID configuation for the staging target uses the testing credentials
 for minting DOIs.  In this way, the staging deployment interacts with the external EZID service, but the minted DOIs are only around for two weeks.

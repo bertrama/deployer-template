@@ -6,7 +6,7 @@
 Description=%i Resque-Pool
 After=redis-server.service
 Requires=redis-server.service
-ReloadPropagatedFrom=app-cc-puma@%i.service
+PartOf=app-cc-puma@%i.service
 
 [Service]
 Type=forking
@@ -20,7 +20,6 @@ Type=forking
 
 Environment="RAILS_ENV=production"
 Environment="RBENV_ROOT=/usr/local/rbenv"
-ExecReload=/bin/kill -HUP $MAINPID
 
 # Using --hot-swap is what we ideally want, but it does not seem to be in the stable branch yet?
 #ExecStart=/usr/local/rbenv/bin/rbenv exec bundle exec resque-pool --daemon --hot-swap --environment production
@@ -28,6 +27,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 
 TimeoutStartSec=20
 Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target

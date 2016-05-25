@@ -24,7 +24,7 @@ Environment="RBENV_ROOT=/usr/local/rbenv"
 Environment="REDIS_NS=%i"
 
 ExecStart=/usr/local/rbenv/bin/rbenv exec bundle exec puma -C config/puma.rb
-ExecReload=/usr/local/rbenv/bin/rbenv exec bundle exec pumactl restart
+
 TimeoutStartSec=20
 Restart=on-failure
 RestartSec=5

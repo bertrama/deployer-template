@@ -1,14 +1,25 @@
-## Curation Concerns Based Application Deployment Project.
-A project "myapp" is hosted publicly.  The deployment and sensitive configs are hosted on a private owned server in a corresponding project "myapp-deployer".
-The intended use of this is to serve as a template for the deployer projects.
+## Deployment Project Template
+A deployment project contains the deployment logic and sensitive information for a corresponding project.  e.g myapp and myapp-deploy.
+The repo for "myapp" can be public while the "myapp-deploy" repo is housed on a private server.  This is an alternative to vaults for sensitive config.
+This project is a template for the "-deploy" projects.
 
-1. Clone this project into a directory for your application using template instead of origin as the remote name.
-`git clone -o template https://github.com/mlibrary/deployer-template.git myproject-deploy`
-2. Break pushes to deployer-template (but keep the remote around just in case).
-`git config remote.origin.pushurl "Pushes to template source disabled."` 
-3. Make required changes in capistrano deployment files and systemd drop in configs.
+## Use
+### Making a -deploy template for myapp
+1. Make a bare git repo to serve as the remote on your private server.
+```sh
+git clone --bare https://github.com/mlibrary/deployer-template.git myapp-deploy.git
+```
+2. Clone a working copy your myapp-deploy repo. 
+```sh
+git clone ssh://priv.institution.org/path/to/myapp-deploy.git
+```
+3. Make required changes in capistrano deployment files
 TODO: list required changes, myapp -> project name, etc.
 
+### Using the deployment template.
+1. Change into the myapp-deploy directory
+2. Run `bundle install --path=.bundle` to install gems (vendorized)
+3. Run `bundle exec cap <stage> deploy` to deploy the stage (e.g. testing, staging, training)
 
 ### Use and Deviations from Capistrano Standard Practices
 Sometimes there are mutliple "production" deployment targets with different configs. For instance, the EZID configuation for the staging target uses the testing credentials
@@ -21,19 +32,23 @@ The `upload` directory contains all the files that should eventually end up on a
 * The `<target>-config/` directories under `upload/` are the config directories for the respective deployment target.
   * `upload/staging-config/` maps to shared/config on the staging target.
   * `upload/production-config/` maps to shared/config on the production target.
+  
+## Double check your configs.
+* Make sure name, port, and host jive with app config.
+* Make sure credentials for external dependencies (db, solr, fedora, etc.) are working.
 
-## One time setup for server
+### One time setup provided by ansible-predeploy run my sysadmin
+The following should be provisioned prior to trying to deploy the application:
 * set up ssh keys for deploying users.
 * create logging directory for apache logs e.g. `/var/log/apache2/myapp-staging/`
 * create directory for the minter-statefile
   * This needs to match the environment variable set in the systemd drop-in conf
-  * e.g. `/var/myapp/myapp-staging/` or `/var/productionname/`
+  * e.g. `/var/local/myapp-staging/`
 * create database using utf8 as the default charset
   * e.g. `CREATE DATABASE mydb DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;`
 * grant permissions to application database user on the database.
 * setup solr
-  * copy solr core template and make sure name, port, and host jive with app config.
-* setup fedora
+  * copy solr core template
 * setup systemd services
   * See section on systemd services
   * `rsync -urz upload/etc/systemd/system target_host:/etc/systemd/system`
@@ -42,26 +57,14 @@ The `upload` directory contains all the files that should eventually end up on a
 * add deploying user and running user to common group.  i.e. the group of the running user.
   * `usermod -a -G groupname username`
 * add deploying user to sudoers
-  * e.g. `%dlps  ALL=(root) NOPASSWD: /bin/systemctl restart app-cc-puma@myapp-staging.service`
-
-## One time pre-capistrano setup.
-in app/shared/ directory:
-* create bundle/
-* create config/
-* create linked directories: log tmp/pids tmp/cache tmp/sockets tmp/derivatives tmp/uploads vendor/bundle public/system public/system/avatars public/uploads
-* rsync contents of upload/config to shared/config on target in order to seed the shared config directory
-* the deploying user and the running user have to be part of the same group. e.g. myapp
-* the directories of the application directory have to belong to the user that runs the application (i.e. myapp)
-  * the deploy user has to belong to the same group as the running user.
-  * group ownership of the directories has to be the shared group.
-  * chown -R myapp:myapp /hydra-dev/myapp-staging/app
+  * e.g. `%dlps  ALL=(root) NOPASSWD: /bin/systemctl restart app-puma@myapp-staging.service`
 
 ## Gotchas
 * pidfile config in `puma.rb` must match systemd `app-<myapp_target>.service` pidfile.
-* myapp user needs to have fits.sh in PATH for non-login sessions. This was done by adding a .bashrc to the HOME dir for the user. (Alternatively, can hardcode path to fits in application)
+* myapp user needs to have fits.sh in PATH for non-login sessions. This was done by adding a drop in conf to the systemd service with a hard coded path.
 * For loading datasets from the command line, the user running populate rake task will need write access to the minter-statefile.
 
 ## Systemd Services
 * Using systemd service templates. The supplied instance corresponds to the app and target. e.g. `myapp-production` or `myapp-staging`
-* Startup should be of the form `systemctl app-cc-puma@myapp-production.service` which will start the corresponding rescue pool.
-* *Need to configure the service and other environment vars using a drop-in conf file.*
+* Startup should be of the form `systemctl app-puma@myapp-production.service` which will start the corresponding rescue pool.
+* Other config and environment vars can be done using a drop-in conf file. *This needs to be reviewed and added manually.*

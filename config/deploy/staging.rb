@@ -7,14 +7,14 @@ server 'staging-server.organization.org',
   roles: %w{app db web},
   primary: true
 
-set :user, 'myapp'
-set :stage, :production
+set :user, 'myapp-staging'
+set :stage, :staging
 set :rails_env, 'production'
-set :deploy_to, '/hydra-dev/myapp-staging/app'
-set :default_env, { 'HOME' => '/hydra-dev/myapp-staging/app/shared'}
+set :deploy_to, '/hydra-dev/myapp-staging'
+set :default_env, { 'HOME' => '/hydra-dev/myapp-staging/shared'}
 set :log_level, :debug
 set :keep_releases, 3
-set :rbenv_custom_path, '/usr/local/rbenv'
+set :rbenv_custom_path, '/l/local/rbenv'
 set :rbenv_ruby, '2.3.0'
 set :rbenv_type, :system
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
@@ -25,7 +25,7 @@ set :config_files, %w{config/database.yml config/secrets.yml     config/puma.rb 
                       config/redis.yml    config/resque-pool.yml config/role_map.yml config/arkivo.yml
                       config/mcommunity.yml config/browse_everything_providers.yml}
 
-set :linked_dirs,  %w{log tmp/pids tmp/cache tmp/derivatives tmp/uploads tmp/sockets vendor/bundle public/system public/uploads}
+set :linked_dirs,  %w{log bundle tmp/pids tmp/cache tmp/derivatives tmp/uploads tmp/sockets vendor/bundle public/system public/uploads}
 
 set :bundle_path, -> { shared_path.join('vendor/bundle') }
 set :bundle_flags, '--quiet --deployment'
@@ -34,12 +34,11 @@ namespace :deploy do
   task :restart do
     on roles(:web) do
       # This has to be enabled using visudo on the server
-      execute :sudo, '/bin/systemctl', 'restart', 'app-cc-puma@myapp-staging.service'
+      execute :sudo, '/bin/systemctl', 'restart', 'app-puma@myapp-staging.service'
     end
   end
 
   # Set the stage so config_files gets the correct stage
-  set :stage, 'staging'
   before :starting, "linked_files:upload:files"
   after :finishing, :compile_assets
   after :finishing, :cleanup

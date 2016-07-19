@@ -1,7 +1,2 @@
-development:
-  url: <%= ENV["MYAPP_SOLR_DEV"] || "http://localhost:8081/solr/myapp-dev" %>
-test:
-  url: <%= ENV["MYAPP_SOLR_TEST"] || "http://localhost:8081/solr/myapp-test" %>
 production:
-  url: <%= ENV["MYAPP_SOLR_PROD"] || "http://localhost:8081/solr/myapp-prod" %>
-
+  url: <%= ENV["MYAPP_SOLR_PROD"] || "http://localhost:8081/solr/myapp-staging" %>

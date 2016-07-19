@@ -1,17 +1,3 @@
-development:
-  host: 'ezid.lib.purdue.edu'
-  port: 443
-  shoulder: 'doi:10.5072/FK2'
-  use_ssl: true
-  user: "ezidtestuser"
-  password: "ezidtestpass"
-development:
-  host: 'ezid.lib.purdue.edu'
-  port: 443
-  shoulder: 'doi:10.5072/FK2'
-  use_ssl: true
-  user: "ezidtestuser"
-  password: "ezidtestpass"
 # USE THE DEV/TESTING CREDENTIALS FOR STAGING.
 production:
   host: 'ezid.lib.purdue.edu'

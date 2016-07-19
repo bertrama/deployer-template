@@ -2,9 +2,9 @@ environment 'production'
 threads 1, 4
 # Bind to the private network address
 # Use tcp as the http server (apache) is on a different host.
-bind 'tcp://10.255.255.255:30060'
+bind 'tcp://localhost:30060'
 
-pidfile '/hydra/myapp/app/shared/log/myapp-puma.pid'
+pidfile '/hydra/myapp-production/shared/log/myapp-puma.pid'
 
 on_restart do
 # Code to run before doing a restart. This code should

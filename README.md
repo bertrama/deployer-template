@@ -13,8 +13,29 @@ git clone --bare https://github.com/mlibrary/deployer-template.git myapp-deploy.
 ```sh
 git clone ssh://priv.institution.org/path/to/myapp-deploy.git
 ```
-3. Make required changes in capistrano deployment files
-TODO: list required changes, myapp -> project name, etc.
+3. Make required changes in capistrano deployment config and applicatio config files.
+├── config
+│   ├── deploy
+│   │   └── *staging.rb    # stage specific deployment logic*
+│   └─ deploy.rb
+├── lib
+└── upload
+    │
+_Files in upload/staging-config/ will be written to config/ of the staging deployment._
+    └── staging-config
+        ├── *arkivo.yml*
+        ├── *blacklight.yml*
+        ├── *browse_everything_providers.yml*
+        ├── *database.yml*
+        ├── *ezid.yml*
+        ├── *fedora.yml*
+        ├── *puma.rb*
+        ├── *redis.yml*
+        ├── *resque-pool.yml*
+        ├── *role_map.yml*
+        ├── *secrets.yml*
+        ├── *solr.yml*
+        └── *zotero.yml*
 
 ### Using the deployment template.
 1. Change into the myapp-deploy directory

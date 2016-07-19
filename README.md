@@ -5,15 +5,15 @@ This project is a template for the "-deploy" projects.
 
 ## Use
 ### Making a -deploy template for myapp
-1. Make a bare git repo to serve as the remote on your private server.
+[1] Make a bare git repo to serve as the remote on your private server.
 ```sh
 git clone --bare https://github.com/mlibrary/deployer-template.git myapp-deploy.git
 ```
-2. Clone a working copy your myapp-deploy repo. 
+[2] Clone a working copy your myapp-deploy repo to wherever you want to work with it.
 ```sh
 git clone ssh://priv.institution.org/path/to/myapp-deploy.git
 ```
-3. Make required changes in capistrano deployment config and applicatio config files.
+[3] Make required changes in capistrano deployment config and applicatio config files.
 ```
 ├── config
 │   ├── deploy

@@ -64,12 +64,3 @@ namespace :deploy do
     end
   end
 end
-
-namespace :puma do
-  task :start do
-    on roles (fetch(:puma_role)) do |role|
-      execute 'sudo', 'systemctl', 'restart', 'app-puma@myapp.service'
-    end
-  end
-end
-

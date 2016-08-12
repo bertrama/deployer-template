@@ -3,17 +3,21 @@ A deployment project contains the deployment logic and sensitive information for
 The repo for "myapp" can be public while the "myapp-deploy" repo is housed on a private server.  This is an alternative to vaults for sensitive config.
 This project is a template for the "-deploy" projects.
 
+## Deviations from Capistrano Tutorials
+There are mutliple RAILS_ENV=production deployment targets with different configs. For instance, the database config for the staging target uses the different credentials than the training and testing targets.
+In order to support this, the deployment projects can keep separate configs for each target.  The target specific configs to be uploaded to the application host are stored in the upload directory.  For example, upload/staging-config/ is the location to put the files that will end uploaded to shared/config/ on the staging deployment. 
+
 ## Use
 ### Making a -deploy template for myapp
-[1] Make a bare git repo to serve as the remote on your private server.
-```sh
-git clone --bare https://github.com/mlibrary/deployer-template.git myapp-deploy.git
-```
-[2] Clone a working copy your myapp-deploy repo to wherever you want to work with it.
-```sh
-git clone ssh://priv.institution.org/path/to/myapp-deploy.git
-```
-[3] Make required changes in capistrano deployment config and applicatio config files.
+1. Make a bare git repo to serve as the remote on your private server.
+    ```sh
+    git clone --bare https://github.com/mlibrary/deployer-template.git myapp-deploy.git
+    ```
+1. Clone a working copy your myapp-deploy repo to wherever you want to work with it.
+    ```sh
+    git clone ssh://priv.institution.org/path/to/myapp-deploy.git
+    ```
+1. Make required changes in capistrano deployment config and applicatio config files.
 ```
 ├── config
 │   ├── deploy
@@ -40,15 +44,12 @@ git clone ssh://priv.institution.org/path/to/myapp-deploy.git
         └── zotero.yml
 ```
 
-### Using the deployment template.
+### Using your deployment project.
 1. Change into the myapp-deploy directory
 2. Run `bundle install --path=.bundle` to install gems (vendorized)
 3. Run `bundle exec cap <stage> deploy` to deploy the stage (e.g. testing, staging, training)
 
-### Use and Deviations from Capistrano Standard Practices
-Sometimes there are mutliple "production" deployment targets with different configs. For instance, the EZID configuation for the staging target uses the testing credentials
-for minting DOIs.  In this way, the staging deployment interacts with the external EZID service, but the minted DOIs are only around for two weeks.
-This also means that the actual production deployment configs aren't getting put on the staging, testing, or other tagets which may have different security levels.
+
 
 The `upload` directory contains all the files that should eventually end up on a target machine instead of those directories being at the base level of the project. 
 

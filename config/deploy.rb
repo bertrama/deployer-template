@@ -20,9 +20,6 @@ SSHKit.config.umask = '0002'
 # Set :tmp_dir so multiple users can run the deplyment
 set :tmp_dir, File.join('/tmp', ENV['USER'] )
 
-# Use branch from env if provided.
-set :branch, ENV['branch'] || ask('Enter the deployment branch or tag:', 'master')
-
 namespace :deploy do
   task :create_dirs do
     on roles(:web) do

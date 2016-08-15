@@ -9,6 +9,7 @@ server 'production-server.organization.org',
 
 set :user, 'myapp-production'
 set :stage, :production
+set :branch, 'master'
 set :rails_env, 'production'
 set :deploy_to, '/hydra/myapp-production'
 set :default_env, { 'HOME' => '/hydra/myapp-production/shared'}

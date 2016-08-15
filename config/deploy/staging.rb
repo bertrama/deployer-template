@@ -9,6 +9,7 @@ server 'staging-server.organization.org',
 
 set :user, 'myapp-staging'
 set :stage, :staging
+set :branch, 'develop'
 set :rails_env, 'production'
 set :deploy_to, '/hydra-dev/myapp-staging'
 set :default_env, { 'HOME' => '/hydra-dev/myapp-staging/shared'}

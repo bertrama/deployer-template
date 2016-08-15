@@ -7,7 +7,6 @@ server 'staging-server.organization.org',
   roles: %w{app db web},
   primary: true
 
-set :user, 'myapp-staging'
 set :stage, :staging
 set :rails_env, 'production'
 set :deploy_to, '/hydra-dev/myapp-staging'

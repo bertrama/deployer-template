@@ -51,6 +51,15 @@ namespace :deploy do
     end
   end
 
+  task :chmod_assets do
+    on roles(:web) do
+      assets_dir = File.join(shared_path,"public","assets", "**")
+      Dir.glob(assets_dir).each do |file|
+        execute('chmod', '2775', file ) if File.stat(file).owned?
+      end
+    end
+  end
+
   before :starting, :create_dirs
   before :starting, :chmod_dirs
   after :updated, :chmod_assets

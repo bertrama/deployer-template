@@ -28,7 +28,7 @@ namespace :deploy do
     on roles(:web) do
       dirs = linked_dirs(shared_path) << File.join(shared_path, "config")
       dirs.each do |dir|
-        execute('mkdir', '-p', dir) unless File.exist?(dir)
+        execute :mkdir, '-p', dir
       end
     end
   end

@@ -59,7 +59,9 @@ namespace :deploy do
     on roles(:web) do
       assets_dir = File.join(shared_path,"public","assets", "**")
       Dir.glob(assets_dir).each do |file|
-        execute('chmod', '2775', file ) if File.stat(file).owned?
+        if test :test, '-0', file
+          execute :chmod, '2775', file
+        end
       end
     end
   end

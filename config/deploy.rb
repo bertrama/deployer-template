@@ -37,7 +37,9 @@ namespace :deploy do
     on roles(:web) do
       dirs = linked_dirs(shared_path) << File.join(shared_path, "config")
       dirs.each do |dir|
-        execute('chmod', '2775', dir) if File.stat(dir).owned?
+        if test(:test, '-0', dir)
+          execute(:chmod, '2775', dir)
+        end
       end
     end
   end

@@ -48,7 +48,9 @@ namespace :deploy do
     on roles(:web) do
       files = linked_files(shared_path)
       files.each do |file|
-        execute('chmod', '0660', file) if File.stat(file).owned?
+        if test :test, '-0', file
+          execute :chmod, '0660', file
+        end
       end
     end
   end

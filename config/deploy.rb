@@ -28,7 +28,7 @@ namespace :deploy do
     on roles(:web) do
       dirs = linked_dirs(shared_path) << File.join(shared_path, "config")
       dirs.each do |dir|
-        execute('mkdir', '-p', dir) unless File.exist?(dir)
+        execute :mkdir, '-p', dir
       end
     end
   end
@@ -37,7 +37,9 @@ namespace :deploy do
     on roles(:web) do
       dirs = linked_dirs(shared_path) << File.join(shared_path, "config")
       dirs.each do |dir|
-        execute('chmod', '2775', dir) if File.stat(dir).owned?
+        if test :test, '-0', dir
+          execute :chmod, '2775', dir
+        end
       end
     end
   end
@@ -46,7 +48,9 @@ namespace :deploy do
     on roles(:web) do
       files = linked_files(shared_path)
       files.each do |file|
-        execute('chmod', '0660', file) if File.stat(file).owned?
+        if test :test, '-0', file
+          execute :chmod, '0660', file
+        end
       end
     end
   end
@@ -55,7 +59,9 @@ namespace :deploy do
     on roles(:web) do
       assets_dir = File.join(shared_path,"public","assets", "**")
       Dir.glob(assets_dir).each do |file|
-        execute('chmod', '2775', file ) if File.stat(file).owned?
+        if test :test, '-0', file
+          execute :chmod, '2775', file
+        end
       end
     end
   end

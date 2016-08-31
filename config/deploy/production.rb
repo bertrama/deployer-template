@@ -7,7 +7,6 @@ server 'production-server.organization.org',
   roles: %w{app db web},
   primary: true
 
-set :user, 'myapp-production'
 set :stage, :production
 set :rails_env, 'production'
 set :deploy_to, '/hydra/myapp-production'

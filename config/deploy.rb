@@ -59,7 +59,7 @@ namespace :deploy do
     on roles(:web) do
       dirs = linked_dirs(shared_path) << File.join(shared_path, "config")
       dirs.each do |dir|
-        if test :test, '-0', dir
+        if test :test, '-O', dir
           execute :chmod, '2775', dir
         end
       end
@@ -70,7 +70,7 @@ namespace :deploy do
     on roles(:web) do
       files = linked_files(shared_path)
       files.each do |file|
-        if test :test, '-0', file
+        if test :test, '-O', file
           execute :chmod, '0660', file
         end
       end
@@ -81,7 +81,7 @@ namespace :deploy do
     on roles(:web) do
       assets_dir = File.join(shared_path,"public","assets", "**")
       Dir.glob(assets_dir).each do |file|
-        if test :test, '-0', file
+        if test :test, '-O', file
           execute :chmod, '2775', file
         end
       end

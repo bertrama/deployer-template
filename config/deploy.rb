@@ -95,8 +95,8 @@ namespace :deploy do
     end
   end
 
-  before :starting, "linked_files:upload:files"
   before :starting, :create_dirs
+  before :starting, "linked_files:upload:files"
   before :starting, :chmod_dirs
   after :updated, :chmod_assets
   after :finishing, :cleanup
